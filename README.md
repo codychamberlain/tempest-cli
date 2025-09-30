@@ -1,24 +1,28 @@
 # Tempest-CLI
 ## CLI access to your TempestWS station and forecast data
+
 Usage:
-  tempest-cli [command]
+
+tempest-cli [command]
 
 Available Commands:
-  completion  Generate the autocompletion script for the specified shell
-  forecast    Given a station ID, return forecoast
-  help        Help about any command
-  observation A brief description of your command
-  station     A brief description of your command
+
+completion Generate the autocompletion script for the specified shell
+forecast Given a station ID, return forecoast
+help Help about any command
+observation A brief description of your command
+station A brief description of your command
 
 Flags:
-  -h, --help             help for tempest-cli
-  -o, --output string    Output format - JSON
-  -s, --station string   Station ID to pull data from
+
+-h, --help help for tempest-cli
+-o, --output string Output format - JSON
+-s, --station string Station ID to pull data from
 
   ### Forecast
   Given a station id, retrieve the forecast. 
   ### Observation
-  Give a station id, retrieve latest observation
+  Given a station id, retrieve latest observation
   ### Station
   If no station id provided, all stations listed 
   Given a specific station id, details for that station
