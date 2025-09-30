@@ -16,5 +16,9 @@ Flags:
   -s, --station string   Station ID to pull data from
 
   ### Forecast
+  Given a station id, retrieve the forecast. 
   ### Observation
+  Give a station id, retrieve latest observation
   ### Station
+  If no station id provided, all stations listed 
+  Given a specific station id, details for that station
