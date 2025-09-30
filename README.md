@@ -1,5 +1,5 @@
-# Tempest-CLI
-## CLI access to your TempestWS station and forecast data
+## Tempest-CLI
+### CLI access to your TempestWX station and forecast data
 
 Usage:
 
