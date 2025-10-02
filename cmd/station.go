@@ -107,7 +107,33 @@ to quickly create a Cobra application.`,
 				return
 			}
 			fmt.Println("No station ID provided, listing all stations:")
-			fmt.Println(string(body))
+			var stations Station
+			err = json.Unmarshal(body, &stations)
+			if err != nil {
+				fmt.Println("Error unmarshaling JSON:", err)
+				return
+			}
+			for _, s := range stations.Stations {
+				fmt.Println("*---------------------------------------------------------------*")
+				fmt.Printf("| Station data for ID %v\t\t\t\t\t|\n", s.StationID)
+				fmt.Println("|---------------------------------------------------------------|")
+				fmt.Printf("| Name\t\t\t| %s\t\t\t|\n", s.Name)
+				fmt.Printf("| Latitude\t\t| %f\t\t\t\t|\n", s.Latitude)
+				fmt.Printf("| Longitude\t\t| %f\t\t\t\t|\n", s.Longitude)
+				fmt.Printf("| Elevation\t\t| %.2f\t\t\t\t|\n", s.StationMeta.Elevation)
+				fmt.Printf("| Timezone\t\t| %s\t\t\t|\n", s.Timezone)
+				fmt.Printf("| Public Name\t\t| %s\t\t|\n", s.PublicName)
+				fmt.Println("|---------------------------------------------------------------|")
+				fmt.Printf("| %v devices connected to station\t\t\t\t|\n", len(s.Devices))
+				for _, device := range s.Devices {
+					fmt.Printf("|  -> Device Name\t| %s\t\t\t\t|\n", device.DeviceMeta.Name)
+					fmt.Printf("|  --- Device Type\t| %s\t\t\t\t\t|\n", device.DeviceType)
+					fmt.Printf("|  --- Firmware Rev.\t| %s\t\t\t\t\t|\n", device.FirmwareRevision)
+					fmt.Printf("|  --- Hardware Rev.\t| %s\t\t\t\t\t|\n", device.HardwareRevision)
+					fmt.Printf("|  --- Serial Number\t| %s\t\t\t\t|\n", device.SerialNumber)
+				}
+				fmt.Println("*---------------------------------------------------------------*")
+			}
 		} else {
 			baseURL := "https://swd.weatherflow.com/swd/rest/stations" + "/" + sid
 			params.Add("station_id", sid)
