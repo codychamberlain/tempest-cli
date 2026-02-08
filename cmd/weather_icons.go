@@ -45,9 +45,9 @@ var weatherIcons = map[string]WeatherIcon{
 			`    /   \    `,
 		},
 		Mini: []string{
-			` \|/ `,
-			` (o) `,
-			` /|\ `,
+			`  \  |  /  `,
+			`--(  o  )--`,
+			`  /  |  \  `,
 		},
 	},
 	"clear-night": {
@@ -59,23 +59,23 @@ var weatherIcons = map[string]WeatherIcon{
 			`      '--'   `,
 		},
 		Mini: []string{
-			`  _  `,
-			` ( ) `,
-			`  ~  `,
+			`    .--.   `,
+			`   /    )  `,
+			`    '--'   `,
 		},
 	},
 	"partly-cloudy-day": {
 		Full: []string{
 			`   \  /      `,
-			`  _ /''.     `,
-			`    \   )    `,
-			`  /''.-'     `,
-			`             `,
+			`    .-.      `,
+			` - (  .''-.  `,
+			`    '(    )  `,
+			`    '''-''   `,
 		},
 		Mini: []string{
-			` ~|/ `,
-			` /o) `,
-			` /|  `,
+			`  \|/ .--.  `,
+			`  (o)(   ) `,
+			`  /|\  '--  `,
 		},
 	},
 	"partly-cloudy-night": {
@@ -87,9 +87,9 @@ var weatherIcons = map[string]WeatherIcon{
 			`    '--'     `,
 		},
 		Mini: []string{
-			` .-. `,
-			`(  ) `,
-			` '-' `,
+			`  .--.--.  `,
+			` /  (   ) `,
+			`  '-. '--  `,
 		},
 	},
 	"cloudy": {
@@ -101,9 +101,9 @@ var weatherIcons = map[string]WeatherIcon{
 			`             `,
 		},
 		Mini: []string{
-			` .-. `,
-			`(   )`,
-			` '-' `,
+			`    .--.   `,
+			`  -(    )- `,
+			`    '--'   `,
 		},
 	},
 	"rainy": {
@@ -115,9 +115,9 @@ var weatherIcons = map[string]WeatherIcon{
 			`' ' ' ' '   `,
 		},
 		Mini: []string{
-			` .-. `,
-			`(   )`,
-			` '''`,
+			`    .--.   `,
+			`  -(    )- `,
+			`   ' ' '   `,
 		},
 	},
 	"snow": {
@@ -129,9 +129,9 @@ var weatherIcons = map[string]WeatherIcon{
 			`*  *  *  *   `,
 		},
 		Mini: []string{
-			` .-. `,
-			`(   )`,
-			` * * `,
+			`    .--.   `,
+			`  -(    )- `,
+			`   * * *   `,
 		},
 	},
 	"sleet": {
@@ -143,9 +143,9 @@ var weatherIcons = map[string]WeatherIcon{
 			`* ' * ' *    `,
 		},
 		Mini: []string{
-			` .-. `,
-			`(   )`,
-			` '* `,
+			`    .--.   `,
+			`  -(    )- `,
+			`   ' * '   `,
 		},
 	},
 	"thunderstorm": {
@@ -157,9 +157,9 @@ var weatherIcons = map[string]WeatherIcon{
 			` /  /  /     `,
 		},
 		Mini: []string{
-			` .-. `,
-			`(   )`,
-			` /_/ `,
+			`    .--.   `,
+			`  -(    )- `,
+			`    /_/    `,
 		},
 	},
 	"windy": {
@@ -171,9 +171,9 @@ var weatherIcons = map[string]WeatherIcon{
 			`             `,
 		},
 		Mini: []string{
-			`     `,
-			` ~~~ `,
-			`     `,
+			`  ~~~~     `,
+			`    ~~~~~  `,
+			`  ~~~~     `,
 		},
 	},
 	"foggy": {
@@ -185,9 +185,9 @@ var weatherIcons = map[string]WeatherIcon{
 			`             `,
 		},
 		Mini: []string{
-			` - - `,
-			`- - -`,
-			` - - `,
+			`  _ - _ -  `,
+			`  - _ - _  `,
+			`  _ - _ -  `,
 		},
 	},
 }

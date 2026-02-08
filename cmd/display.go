@@ -172,11 +172,7 @@ func renderDailyCard(day ForecastDaily, units ForecastUnits, theme WeatherTheme)
 		formatTempShort(day.AirTempLow, tempUnit),
 	))
 
-	condStr := day.Conditions
-	if len(condStr) > 10 {
-		condStr = condStr[:10]
-	}
-	conditions := labelStyle.Render(condStr)
+	conditions := labelStyle.Render(day.Conditions)
 
 	var precipLine string
 	if day.PrecipProbability > 0 {
@@ -184,7 +180,7 @@ func renderDailyCard(day ForecastDaily, units ForecastUnits, theme WeatherTheme)
 	}
 
 	cardStyle := lipgloss.NewStyle().
-		Width(13).
+		Width(15).
 		Align(lipgloss.Center).
 		Padding(0, 1)
 
