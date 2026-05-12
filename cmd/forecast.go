@@ -32,8 +32,8 @@ type ForecastCurrentConditions struct {
 	LightningStrikeLastDistance     int     `json:"lightning_strike_last_distance"`
 	LightningStrikeLastDistanceMsg  string  `json:"lightning_strike_last_distance_msg"`
 	LightningStrikeLastEpoch        int     `json:"lightning_strike_last_epoch"`
-	PrecipAccumLocalDay             int     `json:"precip_accum_local_day"`
-	PrecipAccumLocalYesterday       int     `json:"precip_accum_local_yesterday"`
+	PrecipAccumLocalDay             float64 `json:"precip_accum_local_day"`
+	PrecipAccumLocalYesterday       float64 `json:"precip_accum_local_yesterday"`
 	PrecipMinutesLocalDay           int     `json:"precip_minutes_local_day"`
 	PrecipMinutesLocalYesterday     int     `json:"precip_minutes_local_yesterday"`
 	PrecipProbability               int     `json:"precip_probability"`
@@ -43,7 +43,7 @@ type ForecastCurrentConditions struct {
 	SolarRadiation                  int     `json:"solar_radiation"`
 	StationPressure                 float64 `json:"station_pressure"`
 	Time                            int     `json:"time"`
-	Uv                              int     `json:"uv"`
+	Uv                              float64 `json:"uv"`
 	WetBulbGlobeTemperature         float64 `json:"wet_bulb_globe_temperature"`
 	WetBulbTemperature              float64 `json:"wet_bulb_temperature"`
 	WindAvg                         float64 `json:"wind_avg"`

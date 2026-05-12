@@ -105,7 +105,7 @@ func renderCurrentStats(f Forecast, theme WeatherTheme) string {
 			labelStyle.Render("Pressure:"),
 			valueStyle.Render(formatPressure(cc.SeaLevelPressure, u.UnitsPressure)),
 			labelStyle.Render("UV:"),
-			valueStyle.Render(fmt.Sprintf("%d", cc.Uv)),
+			valueStyle.Render(fmt.Sprintf("%.1f", cc.Uv)),
 		),
 		fmt.Sprintf("%s %s    %s %s",
 			labelStyle.Render("Dew Point:"),
