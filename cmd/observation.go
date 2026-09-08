@@ -79,6 +79,7 @@ type Observation struct {
 
 var (
 	obsTemperatureAsFahrenheit bool
+	obsDistanceAsMiles         bool
 	obsPrecipAsInches          bool
 	obsWindAsMph               bool
 )
@@ -90,8 +91,8 @@ var observationCmd = &cobra.Command{
 	Long: `Retrieve the most recent observation from a Tempest station.
 
 Values default to metric units (°C, m/s, mb, mm, km) as returned by the
-API. Use --fahrenheit, --mph, and --inches to change temperature, wind, and
-precipitation units, or -o JSON for the raw API response.`,
+API. Use --fahrenheit, --mph, --inches, and --miles to change temperature, wind,
+precipitation, and distance units, or -o JSON for the raw API response.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if (cmd.Flag("station").Value.String()) == "" {
 			fmt.Println("Station ID is required")
@@ -137,10 +138,12 @@ precipitation units, or -o JSON for the raw API response.`,
 						TempF:    obsTemperatureAsFahrenheit,
 						WindMph:  obsWindAsMph,
 						PrecipIn: obsPrecipAsInches,
+						DistMi:   obsDistanceAsMiles,
 					}
 					tu := tempUnitLabel(prefs)
 					wu := windUnitLabel(prefs)
 					pu := precipUnitLabel(prefs)
+					du := distUnitLabel(prefs)
 					fmt.Println("|-----------------------------------------------|")
 					fmt.Println("| Observation\t\t\t| Value\t\t|")
 					fmt.Println("|-----------------------------------------------|")
@@ -156,7 +159,7 @@ precipitation units, or -o JSON for the raw API response.`,
 					fmt.Printf("| Barometric Pressure\t\t| %.1f\t\t|\n", latestObs.BarometricPressure)
 					fmt.Printf("| Pressure Trend\t\t| %s\t|\n", latestObs.PressureTrend)
 					fmt.Printf("| Lightning Strike Count\t| %d\t\t|\n", latestObs.LightningStrikeCount)
-					fmt.Printf("| Lightning Strike Distance\t| %d km\t\t|\n", latestObs.LightningStrikeLastDistance)
+					fmt.Printf("| Lightning Strike Distance\t| %.0f %s\t\t|\n", convertDist(float64(latestObs.LightningStrikeLastDistance), prefs), du)
 					fmt.Printf("| Precip\t\t\t| %.2f %s\t|\n", convertPrecip(latestObs.Precip, prefs), pu)
 					fmt.Printf("| Precip Last Hour\t\t| %.2f %s\t|\n", convertPrecip(latestObs.PrecipAccumLast1Hr, prefs), pu)
 					fmt.Printf("| Precip Day\t\t\t| %.2f %s\t|\n", convertPrecip(latestObs.PrecipAccumLocalDayFinal, prefs), pu)
@@ -179,6 +182,7 @@ func init() {
 	rootCmd.AddCommand(observationCmd)
 
 	observationCmd.Flags().BoolVarP(&obsTemperatureAsFahrenheit, "fahrenheit", "f", false, "Display temperature in Fahrenheit (default: Celsius)")
+	observationCmd.Flags().BoolVarP(&obsDistanceAsMiles, "miles", "", false, "Display distance in Miles (default: Kilometers)")
 	observationCmd.Flags().BoolVarP(&obsPrecipAsInches, "inches", "", false, "Display precipitation in Inches (default: Millimeters)")
 	observationCmd.Flags().BoolVarP(&obsWindAsMph, "mph", "", false, "Display wind speed in MPH (default: m/s)")
 }

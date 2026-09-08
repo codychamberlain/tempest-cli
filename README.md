@@ -83,7 +83,7 @@ Retrieve the latest observation data from a station. Values default to metric un
 
 ```bash
 tempest-cli observation -s <station_id>
-tempest-cli observation -s <station_id> --fahrenheit --mph --inches
+tempest-cli observation -s <station_id> --fahrenheit --miles --inches --mph
 ```
 
 Observation flags:
@@ -91,6 +91,7 @@ Observation flags:
 | Flag | Short | Description |
 |---|---|---|
 | `--fahrenheit` | `-f` | Display temperature in Fahrenheit (default: Celsius) |
+| `--miles` | | Display distance in miles (default: km) |
 | `--inches` | | Display precipitation in inches (default: mm) |
 | `--mph` | | Display wind in mph (default: m/s) |
 

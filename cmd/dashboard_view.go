@@ -32,6 +32,20 @@ func convertPrecip(mm float64, prefs UnitPrefs) float64 {
 	return mm
 }
 
+func convertDist(km float64, prefs UnitPrefs) float64 {
+	if prefs.DistMi {
+		return km * 0.621371
+	}
+	return km
+}
+
+func distUnitLabel(prefs UnitPrefs) string {
+	if prefs.DistMi {
+		return "mi"
+	}
+	return "km"
+}
+
 func windUnitLabel(prefs UnitPrefs) string {
 	if prefs.WindMph {
 		return "mph"
