@@ -2,7 +2,7 @@
 
 CLI access to your [TempestWX](https://tempestwx.com/) station and forecast data.
 
-Built with Go, [Cobra](https://github.com/spf13/cobra), and [Lipgloss](https://github.com/charmbracelet/lipgloss).
+Built with Go, [Cobra](https://github.com/spf13/cobra), [Lipgloss](https://github.com/charmbracelet/lipgloss), and [Bubble Tea](https://github.com/charmbracelet/bubbletea).
 
 ## Setup
 
@@ -96,15 +96,31 @@ tempest-cli station -s <station_id>  # details for a specific station
 
 #### websocket
 
-WebSocket connection to station (in development).
+Live, full-screen weather dashboard fed by the Tempest WebSocket API. Shows current conditions with an inferred ASCII weather icon, a wind panel with a compass and a sparkline of recent rapid-wind readings (~3s updates), and a feed of recent rain and lightning events. Standard observations arrive roughly every 60 seconds.
 
 ```bash
-tempest-cli websocket
+tempest-cli websocket -s <station_id>
+tempest-cli websocket -s <station_id> --fahrenheit --mph
 ```
+
+Press `q` or `Ctrl+C` to quit.
+
+The command looks up the station's Tempest device (device type `ST`) via the REST API, then subscribes to observations and rapid wind over the WebSocket. If the connection drops it reconnects automatically, up to 5 attempts with a 5 second delay.
+
+Websocket flags:
+
+| Flag | Short | Description |
+|---|---|---|
+| `--fahrenheit` | `-f` | Display temperature in Fahrenheit (default: Celsius) |
+| `--miles` | | Display distance in miles (default: km) |
+| `--inches` | | Display precipitation in inches (default: mm) |
+| `--mph` | | Display wind in mph (default: m/s) |
+
+The websocket command is an interactive TUI and does not support `-o JSON`.
 
 ### JSON Output
 
-Any command supports raw JSON output with `-o JSON`:
+The `forecast`, `observation`, and `station` commands support raw JSON output with `-o JSON`:
 
 ```bash
 tempest-cli forecast -s <station_id> -o JSON
@@ -120,7 +136,10 @@ cmd/
   weather_icons.go    # ASCII art icons and color themes
   observation.go      # observation command
   station.go          # station command
-  websocket.go        # websocket command (stub)
+  websocket.go        # websocket command, station/device lookup
+  dashboard.go        # Bubble Tea model, WebSocket connection and read loop
+  dashboard_view.go   # dashboard rendering (panels, compass, sparkline)
+  ws_messages.go      # WebSocket message types and array parsers
 main.go               # entry point
 ```
 
