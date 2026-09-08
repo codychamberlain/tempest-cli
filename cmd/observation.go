@@ -77,7 +77,11 @@ type Observation struct {
 	Timezone string `json:"timezone"`
 }
 
-var obsPrecipAsInches bool
+var (
+	obsTemperatureAsFahrenheit bool
+	obsPrecipAsInches          bool
+	obsWindAsMph               bool
+)
 
 // observationCmd represents the observation command
 var observationCmd = &cobra.Command{
@@ -85,9 +89,9 @@ var observationCmd = &cobra.Command{
 	Short: "Show the latest observation from a station",
 	Long: `Retrieve the most recent observation from a Tempest station.
 
-Values are shown in metric units (°C, m/s, mb, mm, km) as returned by the
-API. Use --inches to display precipitation in inches, or -o JSON for the raw
-API response.`,
+Values default to metric units (°C, m/s, mb, mm, km) as returned by the
+API. Use --fahrenheit, --mph, and --inches to change temperature, wind, and
+precipitation units, or -o JSON for the raw API response.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if (cmd.Flag("station").Value.String()) == "" {
 			fmt.Println("Station ID is required")
@@ -129,19 +133,25 @@ API response.`,
 				fmt.Printf("| Latitude: %.4f, Longitude: %.4f\t|\n", o.Latitude, o.Longitude)
 				if len(o.Obs) > 0 {
 					latestObs := o.Obs[len(o.Obs)-1]
-					prefs := UnitPrefs{PrecipIn: obsPrecipAsInches}
+					prefs := UnitPrefs{
+						TempF:    obsTemperatureAsFahrenheit,
+						WindMph:  obsWindAsMph,
+						PrecipIn: obsPrecipAsInches,
+					}
+					tu := tempUnitLabel(prefs)
+					wu := windUnitLabel(prefs)
 					pu := precipUnitLabel(prefs)
 					fmt.Println("|-----------------------------------------------|")
 					fmt.Println("| Observation\t\t\t| Value\t\t|")
 					fmt.Println("|-----------------------------------------------|")
-					fmt.Printf("| Air Temperature\t\t| %.1f\u00B0C\t|\n", latestObs.AirTemperature)
-					fmt.Printf("| Feels Like Temperature\t| %.1f\u00B0C\t|\n", latestObs.FeelsLike)
-					fmt.Printf("| Dewpoint\t\t\t| %.2f\t\t|\n", latestObs.DewPoint)
-					fmt.Printf("| Heat Index\t\t\t| %.2f\u00B0C\t|\n", latestObs.HeatIndex)
-					fmt.Printf("| Wind Chill\t\t\t| %.2f\u00B0C\t|\n", latestObs.WindChill)
+					fmt.Printf("| Air Temperature\t\t| %.1f\u00B0%s\t|\n", convertTemp(latestObs.AirTemperature, prefs), tu)
+					fmt.Printf("| Feels Like Temperature\t| %.1f\u00B0%s\t|\n", convertTemp(latestObs.FeelsLike, prefs), tu)
+					fmt.Printf("| Dewpoint\t\t\t| %.1f\u00B0%s\t|\n", convertTemp(latestObs.DewPoint, prefs), tu)
+					fmt.Printf("| Heat Index\t\t\t| %.1f\u00B0%s\t|\n", convertTemp(latestObs.HeatIndex, prefs), tu)
+					fmt.Printf("| Wind Chill\t\t\t| %.1f\u00B0%s\t|\n", convertTemp(latestObs.WindChill, prefs), tu)
 					fmt.Printf("| Relative Humidity\t\t| %d%%\t\t|\n", latestObs.RelativeHumidity)
 					fmt.Printf("| Wind Direction\t\t| %d\u00B0\t\t|\n", latestObs.WindDirection)
-					fmt.Printf("| Wind Speed\t\t\t| %.1f m/s\t|\n", latestObs.WindAvg)
+					fmt.Printf("| Wind Speed\t\t\t| %.1f %s\t|\n", convertWind(latestObs.WindAvg, prefs), wu)
 					fmt.Printf("| Air Density\t\t\t| %.2f\t\t|\n", latestObs.AirDensity)
 					fmt.Printf("| Barometric Pressure\t\t| %.1f\t\t|\n", latestObs.BarometricPressure)
 					fmt.Printf("| Pressure Trend\t\t| %s\t|\n", latestObs.PressureTrend)
@@ -168,5 +178,7 @@ API response.`,
 func init() {
 	rootCmd.AddCommand(observationCmd)
 
+	observationCmd.Flags().BoolVarP(&obsTemperatureAsFahrenheit, "fahrenheit", "f", false, "Display temperature in Fahrenheit (default: Celsius)")
 	observationCmd.Flags().BoolVarP(&obsPrecipAsInches, "inches", "", false, "Display precipitation in Inches (default: Millimeters)")
+	observationCmd.Flags().BoolVarP(&obsWindAsMph, "mph", "", false, "Display wind speed in MPH (default: m/s)")
 }

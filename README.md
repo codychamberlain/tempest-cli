@@ -79,18 +79,20 @@ Forecast flags:
 
 #### observation
 
-Retrieve the latest observation data from a station. Values are shown in metric units (°C, m/s, mb, mm, km).
+Retrieve the latest observation data from a station. Values default to metric units (°C, m/s, mb, mm, km).
 
 ```bash
 tempest-cli observation -s <station_id>
-tempest-cli observation -s <station_id> --inches
+tempest-cli observation -s <station_id> --fahrenheit --mph --inches
 ```
 
 Observation flags:
 
 | Flag | Short | Description |
 |---|---|---|
+| `--fahrenheit` | `-f` | Display temperature in Fahrenheit (default: Celsius) |
 | `--inches` | | Display precipitation in inches (default: mm) |
+| `--mph` | | Display wind in mph (default: m/s) |
 
 #### station
 
