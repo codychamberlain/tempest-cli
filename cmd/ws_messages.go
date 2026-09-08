@@ -88,10 +88,13 @@ type RapidWindData struct {
 }
 
 // EventData represents a weather event (lightning, rain start).
+// DistanceKm is only set for lightning events (-1 when unknown); the
+// renderer formats it in the user's preferred distance unit.
 type EventData struct {
-	Timestamp time.Time
-	Type      string
-	Detail    string
+	Timestamp  time.Time
+	Type       string
+	Detail     string
+	DistanceKm float64
 }
 
 // ParseObsArray converts the obs_st float64 array to named fields.

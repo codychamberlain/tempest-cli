@@ -398,6 +398,15 @@ func renderWindPanel(m DashboardModel, width int) string {
 	return panelStyle.Render(content)
 }
 
+// formatEventDetail renders an event's text, appending the lightning
+// distance in the user's preferred unit when one is known.
+func formatEventDetail(evt EventData, prefs UnitPrefs) string {
+	if evt.Type == "lightning" && evt.DistanceKm >= 0 {
+		return fmt.Sprintf("Lightning %.0f%s away", convertDist(evt.DistanceKm, prefs), distUnitLabel(prefs))
+	}
+	return evt.Detail
+}
+
 func renderEventsPanel(m DashboardModel, width int) string {
 	theme := getWeatherTheme(inferWeatherIcon(m.currentObs))
 
@@ -421,7 +430,7 @@ func renderEventsPanel(m DashboardModel, width int) string {
 	var lines []string
 	for _, evt := range m.events {
 		ts := evt.Timestamp.Format("15:04")
-		line := fmt.Sprintf("  %s  %s", labelStyle.Render(ts), valueStyle.Render(evt.Detail))
+		line := fmt.Sprintf("  %s  %s", labelStyle.Render(ts), valueStyle.Render(formatEventDetail(evt, m.unitPrefs)))
 		lines = append(lines, line)
 	}
 

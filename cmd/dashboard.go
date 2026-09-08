@@ -269,9 +269,10 @@ func wsReadLoop(conn *websocket.Conn, msgCh chan<- tea.Msg, done chan struct{}) 
 				ts = time.Unix(int64(ep.Evt[0]), 0)
 			}
 			msgCh <- wsEventMsg{event: EventData{
-				Timestamp: ts,
-				Type:      "rain",
-				Detail:    "Rain started",
+				Timestamp:  ts,
+				Type:       "rain",
+				Detail:     "Rain started",
+				DistanceKm: -1,
 			}}
 
 		case "evt_strike":
@@ -280,16 +281,16 @@ func wsReadLoop(conn *websocket.Conn, msgCh chan<- tea.Msg, done chan struct{}) 
 				continue
 			}
 			ts := time.Now()
-			detail := "Lightning detected"
+			dist := -1.0
 			if len(es.Evt) >= 3 {
 				ts = time.Unix(int64(es.Evt[0]), 0)
-				dist := es.Evt[1]
-				detail = fmt.Sprintf("Lightning %.0fkm away", dist)
+				dist = es.Evt[1]
 			}
 			msgCh <- wsEventMsg{event: EventData{
-				Timestamp: ts,
-				Type:      "lightning",
-				Detail:    detail,
+				Timestamp:  ts,
+				Type:       "lightning",
+				Detail:     "Lightning detected",
+				DistanceKm: dist,
 			}}
 
 		case "ack":

@@ -45,7 +45,7 @@ A `.env` file with `API_TOKEN=<token>` is required in the working directory.
 - Weather icons use pure ASCII art (no emoji) with color applied via Lipgloss styles
 - WebSocket data arrives as raw metric arrays with no conditions string; `dashboard_view.go` converts units per `UnitPrefs` and infers an icon/condition name from illuminance, solar radiation, precip, and lightning fields
 - The station observation REST endpoint ignores `units_*` query params and always returns metric; `observation` converts temp, wind, precip, and distance client-side with the `convert*` helpers from `dashboard_view.go`. The `station_units` field in its response reflects the user's app preferences, not the units of the returned values
-- Websocket unit flags mirror the forecast flags (`--fahrenheit`, `--miles`, `--inches`, `--mph`) but use `ws`-prefixed vars
+- Websocket unit flags mirror the forecast flags (`--fahrenheit`, `--miles`, `--inches`, `--mph`) but use `ws`-prefixed vars. The WS read loop stores raw metric values (e.g. `EventData.DistanceKm`); all unit formatting happens in `dashboard_view.go` at render time
 - Terminal width is detected via `golang.org/x/term`, capped at 80 cols, fallback to 100
 
 ## Dependencies
