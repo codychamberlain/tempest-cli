@@ -137,9 +137,12 @@ var (
 // forecastCmd represents the forecast command
 var forecastCmd = &cobra.Command{
 	Use:   "forecast",
-	Short: "Given a station ID, return forecoast",
-	Long: `Forecast data is available for Tempest stations. Given a specific API token and station id you will be returned with
-	forestcast data. `,
+	Short: "Show the forecast for a station",
+	Long: `Retrieve the forecast for a Tempest station and render current
+conditions plus a 5-day outlook with ASCII art weather icons.
+
+Units default to metric; use --fahrenheit, --miles, --inches, and --mph to
+change them, or -o JSON for the raw API response.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		apiToken := getAPIToken()
 		sid := cmd.Flag("station").Value.String()

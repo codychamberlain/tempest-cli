@@ -44,6 +44,7 @@ A `.env` file with `API_TOKEN=<token>` is required in the working directory.
 - JSON output bypasses all formatting — just prints the raw API response body
 - Weather icons use pure ASCII art (no emoji) with color applied via Lipgloss styles
 - WebSocket data arrives as raw metric arrays with no conditions string; `dashboard_view.go` converts units per `UnitPrefs` and infers an icon/condition name from illuminance, solar radiation, precip, and lightning fields
+- The station observation REST endpoint ignores `units_*` query params and always returns metric; `observation` converts precip client-side with `convertPrecip` from `dashboard_view.go`. The `station_units` field in its response reflects the user's app preferences, not the units of the returned values
 - Websocket unit flags mirror the forecast flags (`--fahrenheit`, `--miles`, `--inches`, `--mph`) but use `ws`-prefixed vars
 - Terminal width is detected via `golang.org/x/term`, capped at 80 cols, fallback to 100
 
@@ -63,7 +64,7 @@ No test suite yet. Manual testing:
 ```bash
 ./tempest-cli forecast -s <station_id> --fahrenheit --mph
 ./tempest-cli forecast -s <station_id> -o JSON
-./tempest-cli observation -s <station_id>
+./tempest-cli observation -s <station_id> --inches
 ./tempest-cli station -s <station_id>
 ./tempest-cli websocket -s <station_id> --fahrenheit --mph
 ```

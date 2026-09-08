@@ -77,16 +77,17 @@ type Observation struct {
 	Timezone string `json:"timezone"`
 }
 
+var obsPrecipAsInches bool
+
 // observationCmd represents the observation command
 var observationCmd = &cobra.Command{
 	Use:   "observation",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Show the latest observation from a station",
+	Long: `Retrieve the most recent observation from a Tempest station.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Values are shown in metric units (°C, m/s, mb, mm, km) as returned by the
+API. Use --inches to display precipitation in inches, or -o JSON for the raw
+API response.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if (cmd.Flag("station").Value.String()) == "" {
 			fmt.Println("Station ID is required")
@@ -128,6 +129,8 @@ to quickly create a Cobra application.`,
 				fmt.Printf("| Latitude: %.4f, Longitude: %.4f\t|\n", o.Latitude, o.Longitude)
 				if len(o.Obs) > 0 {
 					latestObs := o.Obs[len(o.Obs)-1]
+					prefs := UnitPrefs{PrecipIn: obsPrecipAsInches}
+					pu := precipUnitLabel(prefs)
 					fmt.Println("|-----------------------------------------------|")
 					fmt.Println("| Observation\t\t\t| Value\t\t|")
 					fmt.Println("|-----------------------------------------------|")
@@ -138,16 +141,16 @@ to quickly create a Cobra application.`,
 					fmt.Printf("| Wind Chill\t\t\t| %.2f\u00B0C\t|\n", latestObs.WindChill)
 					fmt.Printf("| Relative Humidity\t\t| %d%%\t\t|\n", latestObs.RelativeHumidity)
 					fmt.Printf("| Wind Direction\t\t| %d\u00B0\t\t|\n", latestObs.WindDirection)
-					fmt.Printf("| Wind Speed\t\t\t| %.1f %s\t|\n", latestObs.WindAvg, o.StationUnits.UnitsWind)
+					fmt.Printf("| Wind Speed\t\t\t| %.1f m/s\t|\n", latestObs.WindAvg)
 					fmt.Printf("| Air Density\t\t\t| %.2f\t\t|\n", latestObs.AirDensity)
 					fmt.Printf("| Barometric Pressure\t\t| %.1f\t\t|\n", latestObs.BarometricPressure)
 					fmt.Printf("| Pressure Trend\t\t| %s\t|\n", latestObs.PressureTrend)
 					fmt.Printf("| Lightning Strike Count\t| %d\t\t|\n", latestObs.LightningStrikeCount)
 					fmt.Printf("| Lightning Strike Distance\t| %d km\t\t|\n", latestObs.LightningStrikeLastDistance)
-					fmt.Printf("| Precip\t\t\t| %.2f\t\t|\n", latestObs.Precip)
-					fmt.Printf("| Precip Last Hour\t\t| %.2f\t\t|\n", latestObs.PrecipAccumLast1Hr)
-					fmt.Printf("| Precip Day\t\t\t| %.2f\t\t|\n", latestObs.PrecipAccumLocalDayFinal)
-					fmt.Printf("| Precip Yesterday\t\t| %.2f\t\t|\n", latestObs.PrecipAccumLocalYesterdayFinal)
+					fmt.Printf("| Precip\t\t\t| %.2f %s\t|\n", convertPrecip(latestObs.Precip, prefs), pu)
+					fmt.Printf("| Precip Last Hour\t\t| %.2f %s\t|\n", convertPrecip(latestObs.PrecipAccumLast1Hr, prefs), pu)
+					fmt.Printf("| Precip Day\t\t\t| %.2f %s\t|\n", convertPrecip(latestObs.PrecipAccumLocalDayFinal, prefs), pu)
+					fmt.Printf("| Precip Yesterday\t\t| %.2f %s\t|\n", convertPrecip(latestObs.PrecipAccumLocalYesterdayFinal, prefs), pu)
 					fmt.Printf("| UV Index\t\t\t| %.1f\t\t|\n", latestObs.Uv)
 					fmt.Printf("| Solar Radiation\t\t| %d W/m^2\t|\n", latestObs.SolarRadiation)
 					fmt.Println("*-----------------------------------------------*")
@@ -165,13 +168,5 @@ to quickly create a Cobra application.`,
 func init() {
 	rootCmd.AddCommand(observationCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// observationCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// observationCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	observationCmd.Flags().BoolVarP(&obsPrecipAsInches, "inches", "", false, "Display precipitation in Inches (default: Millimeters)")
 }
