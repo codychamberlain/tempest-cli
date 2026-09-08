@@ -41,7 +41,7 @@ func RenderForecast(f Forecast) {
 // renderHeader creates the location/timezone banner.
 func renderHeader(f Forecast, width int, theme WeatherTheme) string {
 	headerStyle := lipgloss.NewStyle().
-		Width(width - 2).
+		Width(width-2).
 		Align(lipgloss.Center).
 		Bold(true).
 		Foreground(lipgloss.Color("#FFFFFF")).
@@ -68,7 +68,7 @@ func renderCurrentConditions(f Forecast, width int, theme WeatherTheme) string {
 	content := lipgloss.JoinHorizontal(lipgloss.Top, iconBlock, "   ", stats)
 
 	panelStyle := lipgloss.NewStyle().
-		Width(width - 2).
+		Width(width-2).
 		BorderStyle(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color(theme.Secondary)).
 		Padding(1, 2)
@@ -146,7 +146,7 @@ func renderDailyForecast(f Forecast, width int, theme WeatherTheme) string {
 	content := lipgloss.JoinHorizontal(lipgloss.Top, cards...)
 
 	panelStyle := lipgloss.NewStyle().
-		Width(width - 2).
+		Width(width-2).
 		BorderStyle(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color(theme.Secondary)).
 		Padding(0, 1).

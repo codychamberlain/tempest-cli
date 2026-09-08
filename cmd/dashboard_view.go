@@ -221,7 +221,7 @@ func renderDashHeader(m DashboardModel, width int) string {
 	content := titleStr + strings.Repeat(" ", padding) + indStr
 
 	headerStyle := lipgloss.NewStyle().
-		Width(width - 2).
+		Width(width-2).
 		BorderStyle(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color(theme.Secondary)).
 		Padding(0, 1)
@@ -233,7 +233,7 @@ func renderConditionsPanel(m DashboardModel, width int) string {
 	theme := getWeatherTheme(inferWeatherIcon(m.currentObs))
 
 	panelStyle := lipgloss.NewStyle().
-		Width(width - 2).
+		Width(width-2).
 		BorderStyle(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color(theme.Secondary)).
 		Padding(1, 2)
@@ -326,7 +326,7 @@ func renderWindPanel(m DashboardModel, width int) string {
 	theme := getWeatherTheme(inferWeatherIcon(m.currentObs))
 
 	panelStyle := lipgloss.NewStyle().
-		Width(width - 2).
+		Width(width-2).
 		BorderStyle(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color(theme.Secondary)).
 		Padding(0, 2)
@@ -388,7 +388,7 @@ func renderEventsPanel(m DashboardModel, width int) string {
 	theme := getWeatherTheme(inferWeatherIcon(m.currentObs))
 
 	panelStyle := lipgloss.NewStyle().
-		Width(width - 2).
+		Width(width-2).
 		BorderStyle(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color(theme.Secondary)).
 		Padding(0, 2)
